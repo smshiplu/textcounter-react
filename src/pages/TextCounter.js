@@ -12,9 +12,10 @@ import { useToken } from "../hooks/useToken";
 
 import { TextCounterHeader } from "../components/TextCounterHeader";
 import { CharacterCard } from "../components/CharacterCard";
-import { getUser, getUserCounts, saveCount, getCount, updateCount } from "../services/dataService";
 import { LoginModal } from "../components/LoginModal";
 import { RegisterModal } from "../components/RegisterModal";
+
+import { getUser, getUserCounts, saveCount, getCount, updateCount } from "../services/dataService";
 
 
 export const TextCounter = () => {
