@@ -17,7 +17,6 @@ import { RegisterModal } from "../components/RegisterModal";
 
 import { getUser, getUserCounts, saveCount, getCount, updateCount } from "../services/dataService";
 
-
 export const TextCounter = () => {
   const token = JSON.parse(sessionStorage.getItem("token"));
   const tcid = JSON.parse(sessionStorage.getItem("tcid"));
