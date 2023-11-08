@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
+
 import { login } from "../services/authService";
 
 export const LoginModal = ({setToggleLoginModal, setToggleRegistrationModal}) => {
