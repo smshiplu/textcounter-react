@@ -24,6 +24,25 @@ export const LoginModal = ({setToggleLoginModal, setToggleRegistrationModal}) =>
       toast.error(error.message);
     }
   }
+  async function handleGuestLogin() {
+    try {
+      emailRef.current.value = process.env.REACT_APP_GUEST_EMAIL;
+      passwordRef.current.value = process.env.REACT_APP_GUEST_PASSWORD;
+
+      const authValue = {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      }
+      const data = await login(authValue);
+      if(!data.accessToken) {
+        toast.error("Can not be logged in!")
+      }
+      setToggleLoginModal(false);
+
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   const handleRegisterModalView = () => {
     setToggleLoginModal(false);
@@ -50,7 +69,7 @@ export const LoginModal = ({setToggleLoginModal, setToggleRegistrationModal}) =>
           <div className="flex flex-col items-start justify-start gap-3 mt-5">
             <button type="submit" className="text-sm bg-blue-600 hover:bg-blue-500 focus:outline-none text-white py-2 px-4 rounded-lg">Login</button>
             <div className="text-gray-800 dark:text-gray-100 flex flex-col  gap-1 text-sm  ">
-              <p>Or <button className="underline decoration-blue-500 hover:decoration-blue-300 underline-offset-4">Login as Guest</button></p>
+              <p>Or <button onClick={handleGuestLogin} className="underline decoration-blue-500 hover:decoration-blue-300 underline-offset-4">Login as Guest</button></p>
               <p>Don't Have an Account? <button onClick={handleRegisterModalView} className="underline decoration-blue-500 hover:decoration-blue-300 underline-offset-4">Register Now</button></p>
             </div>
           </div>
