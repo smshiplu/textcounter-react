@@ -550,6 +550,9 @@ export const TextCounter = () => {
   useEffect(() => {
     if(token) {
       getSavedCounts();
+      setIsActiveLoggedIn(true);
+    } else {
+      setIsActiveLoggedIn(false);
     }
   }, [token]);
 
