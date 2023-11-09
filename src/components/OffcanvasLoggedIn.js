@@ -4,7 +4,7 @@ import { BiSolidSave, BiArrowBack, BiLogOutCircle } from "react-icons/bi";
 import { logout } from "../services/authService";
 import { SavedCountCard } from "./SavedCountCard";
 
-export const OffcanvasLoggedIn = ({enableCountUpdate, userInfo, getSavedCounts, countList, setOffCanvasToggle, darkMode, setDarkMode}) => {
+export const OffcanvasLoggedIn = ({setIsActiveLoggedIn, enableCountUpdate, userInfo, getSavedCounts, countList, setOffCanvasToggle, darkMode, setDarkMode}) => {
 
   const [secondLvlMenu, setSecondLvlMenu] = useState(false);
   const [savedCountList, setSavedCountListList] = useState([]);
@@ -15,6 +15,7 @@ export const OffcanvasLoggedIn = ({enableCountUpdate, userInfo, getSavedCounts, 
 
   const handleLogOut = () => {
     logout();
+    setIsActiveLoggedIn(false);
     setOffCanvasToggle(false);
   }
 

@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 
 import { login } from "../services/authService";
 
-export const LoginModal = ({setToggleLoginModal, setToggleRegistrationModal}) => {
+export const LoginModal = ({setIsActiveLoggedIn, setToggleLoginModal, setToggleRegistrationModal}) => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -19,6 +19,7 @@ export const LoginModal = ({setToggleLoginModal, setToggleRegistrationModal}) =>
       if(!data.accessToken) {
         toast.error("Can not be logged in!")
       }
+      setIsActiveLoggedIn(true);
       setToggleLoginModal(false);
 
     } catch (error) {

@@ -9,7 +9,7 @@ import { getUser } from "../services/dataService";
 import { OffcanvasLoggedIn } from "./OffcanvasLoggedIn";
 import { OffcanvasLoggedOut } from "./OffcanvasLoggedOut";
 
-export const TextCounterHeader = ({enableCountUpdate, getSavedCounts, countList, setCountList, setToggleLoginModal, setToggleRegistrationModal}) => {
+export const TextCounterHeader = ({setIsActiveLoggedIn, enableCountUpdate, getSavedCounts, countList, setCountList, setToggleLoginModal, setToggleRegistrationModal}) => {
   const token  = JSON.parse(sessionStorage.getItem("token"));
   const tcid = JSON.parse(sessionStorage.getItem("tcid"));
   const isTokenExpired = useToken();
@@ -61,7 +61,7 @@ export const TextCounterHeader = ({enableCountUpdate, getSavedCounts, countList,
           <button onClick={() => setOffCanvasToggle(!offCanvasToggle)} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-800 hover:bg-gray-700 bg-opacity-50 rounded-lg"><FaTimes size="20px" /></button>
 
           {token && !isTokenExpired && userInfo.id === tcid ? 
-          <OffcanvasLoggedIn enableCountUpdate={enableCountUpdate} userInfo={userInfo} getSavedCounts={getSavedCounts} countList={countList} setOffCanvasToggle={setOffCanvasToggle} darkMode={darkMode} setDarkMode={setDarkMode} /> : <OffcanvasLoggedOut darkMode={darkMode} setDarkMode={setDarkMode} setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal} />}
+          <OffcanvasLoggedIn setIsActiveLoggedIn={setIsActiveLoggedIn} enableCountUpdate={enableCountUpdate} userInfo={userInfo} getSavedCounts={getSavedCounts} countList={countList} setOffCanvasToggle={setOffCanvasToggle} darkMode={darkMode} setDarkMode={setDarkMode} /> : <OffcanvasLoggedOut darkMode={darkMode} setDarkMode={setDarkMode} setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal} />}
         </section>
       }
       

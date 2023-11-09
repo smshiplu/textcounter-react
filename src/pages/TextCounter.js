@@ -6,7 +6,7 @@ import { TbTerminal, TbNumbers } from "react-icons/tb";
 import { LuWholeWord } from "react-icons/lu";
 import { TiSortAlphabetically } from "react-icons/ti";
 import { MdOutlineShortText } from "react-icons/md";
-import { BiLoaderCircle } from "react-icons/bi";
+// import { BiLoaderCircle } from "react-icons/bi";
 
 import { useToken } from "../hooks/useToken";
 
@@ -14,6 +14,7 @@ import { TextCounterHeader } from "../components/TextCounterHeader";
 import { CharacterCard } from "../components/CharacterCard";
 import { LoginModal } from "../components/LoginModal";
 import { RegisterModal } from "../components/RegisterModal";
+import { Loading } from "../components/Loading";
 
 import { getUser, getUserCounts, saveCount, getCount, updateCount } from "../services/dataService";
 
@@ -33,6 +34,7 @@ export const TextCounter = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [isUpdateEnabled, setIsUpdateEnabled] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [isActiveLoggedIn, setIsActiveLoggedIn] = useState(false);
 
 
   const [characterLength, setCharacterLength] = useState(0);
@@ -521,6 +523,7 @@ export const TextCounter = () => {
     try {
       const data = await getUser();
       if(token && !isTokenExpired && tcid === data.id) {
+        setIsActiveLoggedIn(true);
         return data;
       } else {
         toast.error(data);
@@ -661,7 +664,7 @@ export const TextCounter = () => {
 
   return (
     <>
-      <TextCounterHeader enableCountUpdate={enableCountUpdate} getSavedCounts={getSavedCounts} countList={countList} setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal} />
+      <TextCounterHeader setIsActiveLoggedIn={setIsActiveLoggedIn} enableCountUpdate={enableCountUpdate} getSavedCounts={getSavedCounts} countList={countList} setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal} />
       <main>        
         <section className="flex flex-col md:flex-row items-start gap-5">
           <div className="w-full md:w-1/5 flex flex-col text-sm items-start">
@@ -693,24 +696,20 @@ export const TextCounter = () => {
 
               {clearBtn && <button onClick={handleClear} className="bg-rose-600 hover:bg-rose-500 text-gray-50 py-2 px-8 my-5 rounded cursor-pointer focus:outline-none">Clear</button>}
 
-              {!token && !isUpdateEnabled &&  characterLength > 0 && <button onClick={() => setToggleLoginModal(true)}  className="bg-blue-600 hover:bg-blue-500 text-blue-50 py-2 px-8 my-5 rounded focus:outline-none">Login to save</button>}
+              {!token && !isActiveLoggedIn && !isUpdateEnabled &&  characterLength > 0 && <button onClick={() => setToggleLoginModal(true)}  className="bg-blue-600 hover:bg-blue-500 text-blue-50 py-2 px-8 my-5 rounded focus:outline-none">Login to save</button>}
 
-              {token && !isUpdateEnabled &&  characterLength > 0 && <button onClick={handleSaveCount}  className="bg-blue-600 hover:bg-blue-500 text-blue-50 py-2 px-8 my-5 rounded focus:outline-none">Save This Count</button>}
+              {token && isActiveLoggedIn && !isUpdateEnabled && characterLength > 0 && <button onClick={handleSaveCount}  className="bg-blue-600 hover:bg-blue-500 text-blue-50 py-2 px-8 my-5 rounded focus:outline-none">Save This Count</button>}
 
-              {isUpdateEnabled &&  characterLength > 0 && <button onClick={handleUpdateCount}  className="bg-blue-600 hover:bg-blue-500 text-blue-50 py-2 px-8 my-5 rounded focus:outline-none">Update</button>}
+              {token && isActiveLoggedIn && isUpdateEnabled &&  characterLength > 0 && <button onClick={handleUpdateCount}  className="bg-blue-600 hover:bg-blue-500 text-blue-50 py-2 px-8 my-5 rounded focus:outline-none">Update</button>}
             </div>
           </div>
         </section>
 
-        {!token && toggleLoginModal &&  <LoginModal setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal} />}
+        {!token && toggleLoginModal &&  <LoginModal setIsActiveLoggedIn={setIsActiveLoggedIn} setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal} />}
 
         {!token && toggleRegistrationModal && <RegisterModal setToggleLoginModal={setToggleLoginModal} setToggleRegistrationModal={setToggleRegistrationModal}/>}
       </main>
-      {showLoading &&
-        <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50">
-          <span className="w-96 absolute top-1/2 left-1/2 m-auto"><BiLoaderCircle  className="animate-spin" size={"30px"} color="white"/></span>
-        </div>
-      }
+      {showLoading && <Loading />}
     </>
 
   )
